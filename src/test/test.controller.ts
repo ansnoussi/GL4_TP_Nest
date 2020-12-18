@@ -1,31 +1,15 @@
-import { Controller, Delete, Get, Patch, Post, Put } from '@nestjs/common';
+import { Controller, Delete, Get } from '@nestjs/common';
 
-
-@Controller('test')
+@Controller()
 export class TestController {
-    @Get('')
-    getTest(){
+    @Get('test')
+    get(): string {
+        console.log('Test Get');
         return 'TEST GET';
     }
-
-    @Put('')
-    putTest(){
-        return 'TEST PUT';
+    @Delete('test')
+    delete(): string {
+        console.log('Test DELETE');
+        return ' TEST DELETE';
     }
-
-    @Post('')
-    postTest(){
-        return 'TEST POST';
-    }
-
-    @Patch('')
-    patchTest(){
-        return 'TEST PATCH';
-    }
-
-    @Delete('')
-    deleteTest(){
-        return 'TEST DELETE';
-    }
-
 }

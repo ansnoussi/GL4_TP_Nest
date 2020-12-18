@@ -1,54 +1,61 @@
-import { Controller, Get, Put, Post, Delete, Body, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
+import { CritereDto } from './dto/critere.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { TodoEntity } from './entities/todo.entity';
 import { TodoService } from './todo.service';
-
 
 @Controller('todo')
 export class TodoController {
+    constructor(private todoService: TodoService) {
 
+    }
+    @Post()
+    addTodo(
+        @Body() newTodo: CreateTodoDto
+    ) {
+        console.log(typeof newTodo);
+        return this.todoService.addTodo(newTodo);
+    }
 
-    constructor(
-        private todoService: TodoService
-    ){}
+    @Get('/search')
+    searchTodo(
+        @Body() critereTodo: CritereDto
+    ) {
+        return this.todoService.searchTodo(critereTodo);
+    }
 
-
-    @Get('')
-    getTodos(){
-        return this.todoService.getTodos();
+    @Get()
+    getTodos():Promise<TodoEntity[]> {
+        return this.todoService.findAllTodo();
     }
 
     @Get(':id')
     getTodoById(
-        @Param('id') id: string 
-    ){
-        return this.todoService.getTodoById(id);
+        @Param('id') id
+    ) {
+        return this.todoService.findTodoById(id);
     }
 
-
-    @Post('')
-    postTodo(
-        @Body() newTodo: CreateTodoDto
-    ){
-        return this.todoService.postTodo(newTodo);
+    @Get('restore/:id')
+    restoreTodoById(
+        @Param('id') id
+    ) {
+        return this.todoService.restoreTodo(id);
     }
-
 
     @Put(':id')
-    putTodo(
-        @Body() newTodo: UpdateTodoDto,
-        @Param('id') id: string
-    ){
-        return this.todoService.putTodo(newTodo, id);
-
+    updateTodo(
+        @Param('id') id,
+        @Body() newTodo: UpdateTodoDto
+    ):Promise<TodoEntity> {
+        return this.todoService.updateTodo(id, newTodo);
     }
-
-
 
     @Delete(':id')
-    deleteTodo(
-        @Param('id') id: string 
-    ){
+    deleteTodo(@Param('id') id:number) {
         return this.todoService.deleteTodo(id);
     }
+
 }
+

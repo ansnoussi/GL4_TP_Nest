@@ -1,13 +1,19 @@
-import { IsNotEmpty, MaxLength, MinLength } from "class-validator";
-
+import { IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
+import {MAX_ERROR_MESSAGE, MIN_ERROR_MESSAGE} from "../error.messages"
 export class CreateTodoDto{
-
-    @IsNotEmpty({message: "Le name est obligatoire"})
-    @MinLength(3,{message: "Le name doit avoir une taille minimale de 3 caractères"})
-    @MaxLength(10,{message: "Le name doit avoir une taille maximale de 10 caractères"})
+    @IsNotEmpty()
+    @MinLength(3,{
+        message: MIN_ERROR_MESSAGE
+    })
+    @MaxLength(10,{
+        message: MAX_ERROR_MESSAGE
+    })
     name: string;
-
-    @IsNotEmpty({message: "La description est obligatoire"})
-    @MinLength(10,{message: "La description doit avoir une taille minimale de 10 caractères"})
+    
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(10,{
+        message:MIN_ERROR_MESSAGE
+    })
     description: string;
 }

@@ -1,17 +1,28 @@
-import { IsEnum, IsNotEmpty, MaxLength, MinLength } from "class-validator";
-import { TodoStatusEnum } from "../enums/todo.status.enum";
+import { IsIn, IsOptional } from "class-validator";
+import { TodoStatusEnum } from "../enum/todo-status.enum"
+import { IsNotEmpty, IsString, MinLength } from "class-validator";
 
 export class UpdateTodoDto{
+    @IsIn([
+        TodoStatusEnum.waiting,
+        TodoStatusEnum.done,
+        TodoStatusEnum.actif
+    ],{
+        message:`Le status est invalide`
+    })
+    @IsOptional()
+    statut : TodoStatusEnum;
 
-    @IsNotEmpty({message: "Le name est obligatoire"})
-    @MinLength(3,{message: "Le name doit avoir une taille minimale de 3 caractères"})
-    @MaxLength(10,{message: "Le name doit avoir une taille maximale de 10 caractères"})
+    @IsNotEmpty()
+    @MinLength(6,{
+        message:"$property est invalide, la taille doit étre d'au moins $constraint1 caractéres"
+    })
+    @IsOptional()
     name: string;
-
-    @IsNotEmpty({message: "La description est obligatoire"})
-    @MinLength(10,{message: "La description doit avoir une taille minimale de 10 caractères"})
+    
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(10)
+    @IsOptional()
     description: string;
-
-    @IsEnum(TodoStatusEnum)
-    status: TodoStatusEnum;
 }
